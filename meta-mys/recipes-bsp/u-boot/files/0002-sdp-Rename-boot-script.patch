@@ -1,0 +1,29 @@
+From a5306d44b586416235501118a4c9f5669146aa7b Mon Sep 17 00:00:00 2001
+From: Sven Schwermer <sven.schwermer@disruptive-technologies.com>
+Date: Mon, 27 Dec 2021 12:53:12 +0100
+Subject: [PATCH 2/3] sdp: Rename boot script
+
+script@1 is not a valid name because the "reg" property is missing. The
+proper solution would be to find the boot script of the default
+configuration in the FIT image.
+---
+ drivers/usb/gadget/f_sdp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/usb/gadget/f_sdp.c b/drivers/usb/gadget/f_sdp.c
+index e48aa2f90d..c9fb166bbc 100644
+--- a/drivers/usb/gadget/f_sdp.c
++++ b/drivers/usb/gadget/f_sdp.c
+@@ -866,7 +866,8 @@ static int sdp_handle_in_ep(struct spl_image_info *spl_image)
+ 			jump_to_image_no_args(&spl_image);
+ #else
+ 			/* In U-Boot, allow jumps to scripts */
+-			image_source_script(sdp_func->jmp_address, "script@1");
++			/* TODO: use default boot script */
++			image_source_script(sdp_func->jmp_address, "bootscr-boot.sh");
+ #endif
+ 		}
+ 
+-- 
+2.34.1
+
