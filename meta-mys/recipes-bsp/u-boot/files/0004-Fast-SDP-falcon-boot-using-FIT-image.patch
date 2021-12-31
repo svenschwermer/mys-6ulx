@@ -1,0 +1,53 @@
+From d2c32ccaf8f3ac4b6e89433591d772a9847a42fa Mon Sep 17 00:00:00 2001
+From: Sven Schwermer <sven.schwermer@disruptive-technologies.com>
+Date: Fri, 31 Dec 2021 12:37:05 +0100
+Subject: [PATCH] Fast SDP falcon boot using FIT image
+
+---
+ arch/arm/mach-imx/cache.c  | 2 +-
+ board/myir/mys_6ulx/spl.c  | 3 +++
+ include/configs/mys_6ulx.h | 3 +++
+ 3 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-imx/cache.c b/arch/arm/mach-imx/cache.c
+index 4e3b49a3fd..ab9b621a2a 100644
+--- a/arch/arm/mach-imx/cache.c
++++ b/arch/arm/mach-imx/cache.c
+@@ -11,7 +11,7 @@
+ #include <asm/io.h>
+ #include <asm/mach-imx/sys_proto.h>
+ 
+-static void enable_ca7_smp(void)
++void enable_ca7_smp(void)
+ {
+ 	u32 val;
+ 
+diff --git a/board/myir/mys_6ulx/spl.c b/board/myir/mys_6ulx/spl.c
+index 5cd4d05283..a9674a4a8e 100644
+--- a/board/myir/mys_6ulx/spl.c
++++ b/board/myir/mys_6ulx/spl.c
+@@ -203,4 +203,7 @@ void board_init_f(ulong dummy)
+ 
+ 	/* DDR initialization */
+ 	spl_dram_init();
++
++	void enable_ca7_smp(void);
++	enable_ca7_smp();
+ }
+diff --git a/include/configs/mys_6ulx.h b/include/configs/mys_6ulx.h
+index bdb8908371..3b76f1fa0a 100644
+--- a/include/configs/mys_6ulx.h
++++ b/include/configs/mys_6ulx.h
+@@ -12,6 +12,9 @@
+ 
+ /* SPL options */
+ #include "imx6_spl.h"
++#define CONFIG_SYS_SPL_ARGS_ADDR 0x83000000
++#undef CONFIG_SYS_SPL_MALLOC_SIZE
++#define CONFIG_SYS_SPL_MALLOC_SIZE (3 * SZ_1M)
+ 
+ #define CONFIG_SYS_FSL_USDHC_NUM	1
+ 
+-- 
+2.34.1
+

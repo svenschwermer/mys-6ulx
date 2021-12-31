@@ -1,2 +1,3 @@
-- Boot FIT image straight from SPL possible?
 - initrd_high necessary to undefine; why can't we have the initramfs in place?
+- u-boot: Fix WDT
+  - Unneeded copies: sdp_load_read
