@@ -26,7 +26,8 @@ ramdisk_end=$(awk --non-decimal-data \
   -vsz="$ramdisk_size" \
   'BEGIN{printf "0x%08x",ld+sz}')
 fdtput -pt x $fdt_path /chosen linux,initrd-end "$ramdisk_end"
-fdtput -pt s $fdt_path /chosen bootargs 'quiet rdinit=/bin/ash' # earlycon
+fdtput -pt s $fdt_path /chosen bootargs 'quiet rdinit=/bin/ash'
+#fdtput -pt s $fdt_path /chosen bootargs 'earlycon rdinit=/bin/ash'
 console=$(fdtget $fdt_path /chosen stdout-path | cut -d: -f1)
 fdtput -t s $fdt_path /chosen stdout-path "$console:115200"
 
